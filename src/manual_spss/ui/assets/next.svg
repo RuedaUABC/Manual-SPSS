@@ -1,0 +1,24 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="50" height="50" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="flecha_Siguiente" filter="url(#filter0_i_0_25)">
+<g clip-path="url(#clip0_0_25)">
+<g id="Vector" opacity="0.87">
+</g>
+<path id="Vector_2" d="M15.375 43.7708C16.3958 44.7917 18.0417 44.7917 19.0625 43.7708L36.375 26.4583C37.1875 25.6458 37.1875 24.3333 36.375 23.5208L19.0625 6.20833C18.0417 5.1875 16.3958 5.1875 15.375 6.20833C14.3542 7.22917 14.3542 8.875 15.375 9.89583L30.4583 25L15.3542 40.1042C14.3542 41.1042 14.3542 42.7708 15.375 43.7708V43.7708Z" fill="#7F3F43"/>
+</g>
+</g>
+<defs>
+<filter id="filter0_i_0_25" x="0" y="0" width="50" height="54" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset dy="4"/>
+<feGaussianBlur stdDeviation="2"/>
+<feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"/>
+<feBlend mode="normal" in2="shape" result="effect1_innerShadow_0_25"/>
+</filter>
+<clipPath id="clip0_0_25">
+<rect width="50" height="50" fill="white"/>
+</clipPath>
+</defs>
+</svg>

@@ -214,7 +214,7 @@ implementación mínima y refactor con la suite verde.
 
 ## Fase 4: Distribución y documentación
 
-- [ ] **Tarea 11: Documentar formato y comprobar carpeta externa de distribución**
+- [x] **Tarea 11: Documentar formato y comprobar carpeta externa de distribución**
   - Descripción: documentar el manifiesto, IDs, HTML, recursos y errores; probar
     que el mismo catálogo carga desde el árbol del proyecto y desde una copia
     simulada en la ruta futura del bundle.
@@ -232,11 +232,50 @@ implementación mínima y refactor con la suite verde.
     `README.md`.
   - Dependencias: Tareas 1–10.
   - Alcance: pequeño.
+  - Resultado: `docs/content-format.md` describe el esquema 1 y coincide con
+    el validador; README incluye inicio rápido y comandos; la prueba copia y
+    carga el catálogo bajo una raíz temporal `dist/ManualSPSS/content/`.
+    Verificado con 83 pruebas, Ruff y mypy.
 
 ### Punto de control: `content-model` listo
 
-- [ ] Criterios de éxito de `SPEC-content-model.md` cumplidos.
+- [x] Criterios de éxito de `SPEC-content-model.md` cumplidos.
 - [x] Cobertura total ≥80% y validación crítica al 100%.
 - [x] Catálogo de capítulos 1–8 íntegro y local.
-- [ ] La carga desde `dist/ManualSPSS/content/` se verificará en la tarea 11.
-- [ ] Revisar el módulo antes de iniciar `reader-navigation`.
+- [x] La carga desde `dist/ManualSPSS/content/` se verificó en la tarea 11.
+- [x] Módulo revisado antes de iniciar `reader-navigation`.
+
+## Fase 5: Base de interfaz
+
+- [x] **Tarea 12: Implementar `ui-foundation` con PyQt6**
+  - Descripción: crear la ventana ejecutable, navegación del lector, pantallas
+    base de Ajustes, temas claro/oscuro y adaptación del catálogo validado.
+  - Aceptación:
+    - La ventana lee los capítulos locales, cambia entre capítulos y abre/cierra
+      Ajustes sin que los widgets dependan de `content_model`.
+    - La apariencia claro/oscuro actualiza los paneles, controles y HTML.
+    - Los recursos Figma se guardan localmente y viajan como datos del paquete.
+    - La aplicación abre desde `manual-spss` y permite una futura distribución
+      `onedir` con `content/` externo.
+    - Los controles de audio y ajustes de voz informan que dependen del módulo
+      TTS todavía pendiente.
+  - Verificación: `uv run pytest -q`, `uv run ruff check .`,
+    `uv run mypy src/manual_spss` y capturas en 1440×1024 y 1024×768.
+  - Archivos: `src/manual_spss/ui/`, `src/manual_spss/app.py`,
+    `src/manual_spss/__main__.py`, `SPEC-ui-foundation.md` y README.
+  - Dependencias: `content-model`; PyQt6 se fija debajo de 6.12 por errores de
+    sintaxis en los stubs de esa versión al analizar con mypy.
+  - Resultado: lector y pantallas base de Ajustes, temas claro/oscuro,
+    navegación por teclado, ruta CLI, catálogo externo y recursos incluidos en
+    el wheel. Ocho pruebas de UI; 91 pruebas totales con 93% de cobertura de
+    líneas/ramas, Ruff y mypy verdes. Capturas revisadas en 1440×1024 y
+    1024×768; el comprobador ECC de evidencia pasa.
+
+### Punto de control: `ui-foundation` listo
+
+- [x] Lector local y pantallas base de Ajustes abren desde el punto de entrada.
+- [x] Los temas claro/oscuro actualizan el contenido y la interfaz.
+- [x] Navegación con teclado y accesibilidad básica revisadas.
+- [x] Los recursos visuales están incluidos en el wheel; `content/` sigue
+  externo y localizable para distribución posterior.
+- [x] Capturas y estados visibles registrados en `artifacts/ui-foundation/`.

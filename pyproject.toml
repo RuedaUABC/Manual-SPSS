@@ -8,7 +8,10 @@ version = "0.1.0"
 description = "Manual interactivo de consulta y aprendizaje de SPSS"
 readme = "README.md"
 requires-python = ">=3.12"
-dependencies = []
+dependencies = ["PyQt6>=6.7,<6.12"]
+
+[project.scripts]
+manual-spss = "manual_spss.app:main"
 
 [project.optional-dependencies]
 dev = [
@@ -23,6 +26,9 @@ package-dir = {"" = "src"}
 
 [tool.setuptools.packages.find]
 where = ["src"]
+
+[tool.setuptools.package-data]
+manual_spss = ["ui/assets/*.png", "ui/assets/*.svg"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

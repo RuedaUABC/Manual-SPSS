@@ -1,0 +1,75 @@
+{
+  "contract": "SPEC-ui-foundation.md; lector y Ajustes contrastados con Figma, con reflujo para 1440x1024 y 1024x768.",
+  "targetViewports": ["1440x1024", "1024x768"],
+  "accessibility": {
+    "status": "pass",
+    "evidence": "Las pruebas navegan capítulos con Flecha abajo y cambian el tema con Espacio; verifican el nombre accesible del botón Ajustes y contraste >= 4.5:1 para texto, barra lateral y selección en ambos temas. La captura del lector muestra el indicador de foco inicial."
+  },
+  "responsive": {
+    "status": "pass",
+    "evidence": "Se inspeccionaron las capturas del lector en 1440x1024 y 1024x768, además de Ajustes en ambos tamaños. La prueba de redimensionado confirma cambios de tipografía 30px/22px y mantiene el capítulo seleccionado."
+  },
+  "contentStates": {
+    "loading": {
+      "status": "not-applicable",
+      "reason": "El catálogo se valida y muestra de forma síncrona desde disco; no hay una operación asíncrona que necesite estado de carga."
+    },
+    "empty": {
+      "status": "pass",
+      "evidence": "ManualWindow sin páginas muestra el mensaje de catálogo vacío, conserva Inicio y se inspeccionó en empty-state-1440x1024.png."
+    },
+    "error": {
+      "status": "pass",
+      "evidence": "main() con MANUAL_SPSS_CONTENT sin manifest retorna 1, muestra una ruta de recuperación y se inspeccionó error-state.png."
+    },
+    "partial": {
+      "status": "not-applicable",
+      "reason": "El repositorio valida el catálogo completo antes de devolverlo; no se renderizan catálogos parciales."
+    },
+    "success": {
+      "status": "pass",
+      "evidence": "La selección de capítulos y el cambio de tema funcionan en pruebas; las capturas muestran contenido local real y Ajustes en tema claro y oscuro."
+    },
+    "permission": {
+      "status": "not-applicable",
+      "reason": "La interfaz no solicita cuenta, permisos ni acceso remoto; usa un catálogo local."
+    }
+  },
+  "renderedEvidence": [
+    {
+      "viewport": "1440x1024",
+      "artifact": "reader-1440x1024.png",
+      "observation": "Ventana del lector con capítulos, logo, contenido real, acciones superiores, control de audio estático y navegación inferior."
+    },
+    {
+      "viewport": "1440x1024",
+      "artifact": "reader-content-1440x1024.png",
+      "observation": "Al desplazarse se cargan capturas locales del manual y sus atribuciones de página."
+    },
+    {
+      "viewport": "1440x1024",
+      "artifact": "settings-light-1440x1024.png",
+      "observation": "Pantalla Ajustes con Apariencia seleccionada y tema claro."
+    },
+    {
+      "viewport": "1024x768",
+      "artifact": "reader-1024x768.png",
+      "observation": "El lector conserva jerarquía, navegación y contenido al reducir la ventana; el texto y el logo se ajustan al ancho."
+    },
+    {
+      "viewport": "1024x768",
+      "artifact": "settings-dark-1024x768.png",
+      "observation": "Ajustes en modo oscuro con controles visibles y navegación lateral legible."
+    },
+    {
+      "viewport": "1440x1024",
+      "artifact": "empty-state-1440x1024.png",
+      "observation": "Estado vacío con mensaje centrado y acciones de navegación disponibles."
+    },
+    {
+      "viewport": "400x138",
+      "artifact": "error-state.png",
+      "observation": "Captura independiente del diálogo de error de catálogo con ruta de recuperación explícita."
+    }
+  ]
+}

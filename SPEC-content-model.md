@@ -2,9 +2,9 @@
 
 ## Estado
 
-Propuesta para revisión. Este módulo es el primer módulo del mapa aprobado y
-no debe avanzar a plan o implementación hasta que esta especificación sea
-aprobada.
+Aprobada para implementación. Las fases 1–4 del desglose `tasks/todo.md` están
+implementadas; el empaquetado de la aplicación y la interfaz PyQt pertenecen a
+fases posteriores del proyecto.
 
 ## Objetivo
 
