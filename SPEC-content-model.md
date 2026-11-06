@@ -34,21 +34,27 @@ para Windows.
 1. El contenido oficial estará disponible como archivos locales distribuidos
    junto con la aplicación; la aplicación no dependerá de Internet para
    cargar el manual.
-2. El formato canónico de distribución será un `manifest.json` más un archivo
-   HTML por sección y una carpeta de recursos locales. HTML permite conservar
-   texto enriquecido, tablas e imágenes sin acoplar el contenido a widgets de
-   PyQt.
+2. La fuente entregada del manual está en `Manual SPSS original/`: cuatro PDF
+   que cubren los capítulos 1–8 y suman 50 páginas. Esos PDF son la fuente
+   editorial; el formato de distribución será un `manifest.json`, HTML por
+   sección y recursos locales.
 3. Los identificadores de capítulos y secciones serán definidos por el
    equipo editorial y permanecerán estables entre versiones para no invalidar
    favoritos ni enlaces internos.
-4. El contenido se entregará en UTF-8 y las rutas de recursos serán relativas
-   a la raíz del contenido.
+4. El contenido de distribución se generará offline a partir de los PDF, se
+   revisará visualmente contra las páginas originales y se guardará en UTF-8;
+   las rutas de recursos serán relativas a la raíz del contenido. El PDF no
+   será una dependencia de ejecución.
 5. La primera versión del instalable usará un bundle Windows de 64 bits con
    PyInstaller en modo `onedir`. El instalador final envolverá ese directorio.
    `onedir` se elige porque permite mantener el contenido como recurso externo
    actualizable y simplifica el diagnóstico de recursos faltantes.
 6. El módulo no importará PyQt ni dependerá de Windows; la capa de interfaz
    adaptará el HTML y las rutas locales al componente visual.
+7. La pantalla de créditos seguirá la estructura de Figma; los avisos de
+   PyQt6 respetarán la licencia declarada por esa dependencia. Se conservarán
+   las atribuciones disponibles en la fuente, sin declarar una licencia global
+   nueva para el manual.
 
 ## Contrato de contenido
 
@@ -106,9 +112,14 @@ Reglas del contrato:
   No se permiten ciclos ni padres inexistentes.
 - `kind` será inicialmente `chapter`, `section` o `subsection`.
 - `order` es un entero positivo y define el orden entre hermanos.
+- `search_terms` es opcional; cuando exista, será una lista de cadenas no
+  vacías que la búsqueda podrá indexar además del texto de la sección.
 - `body` debe apuntar a un archivo `.html` local existente dentro de
   `sections/`; no puede escapar de la raíz mediante `..` ni rutas absolutas.
 - `resources[].path` debe ser local, existir y permanecer dentro de `assets/`.
+- El HTML no puede incluir scripts, manejadores de eventos ni elementos de
+  contenido activo. Cada imagen debe apuntar a un recurso local declarado en
+  el manifiesto; no se cargarán imágenes, hojas de estilo ni scripts remotos.
 - Las URLs remotas (`http`, `https`, `file`, `javascript`) no serán recursos
   válidos del contenido. El manual debe ser autocontenido y offline.
 - `attributions` debe conservar autor, fuente, licencia y URL de referencia
@@ -128,8 +139,15 @@ from typing import Protocol
 
 
 class ContentRepository(Protocol):
-    def load(self, root: Path) -> "Manual": ...
+    @classmethod
+    def load(cls, root: Path) -> "ContentRepository": ...
+
+    @property
+    def manual(self) -> "Manual": ...
+
     def get_section(self, section_id: str) -> "Section": ...
+    def root_sections(self) -> tuple["Section", ...]: ...
+    def children_of(self, section_id: str) -> tuple["Section", ...]: ...
     def sections_in_reading_order(self) -> tuple["Section", ...]: ...
 
 
@@ -141,6 +159,7 @@ class Section:
     order: int
     body_html: str
     plain_text: str
+    search_terms: tuple[str, ...]
     resources: tuple["Resource", ...]
     attributions: tuple["Attribution", ...]
 
@@ -280,8 +299,9 @@ Se seguirá Red → Green → Refactor con `pytest`:
 
 - **Siempre:** validar datos en el borde de carga; usar UTF-8; impedir escape
   de rutas; mantener IDs estables; conservar atribuciones; probar primero;
-  mantener el módulo independiente de PyQt; verificar que el contenido pueda
-  ser leído desde una carpeta instalada.
+  mantener el módulo independiente de PyQt; impedir contenido HTML activo o
+  recursos remotos; verificar que el contenido pueda ser leído desde una
+  carpeta instalada.
 - **Preguntar antes:** cambiar el formato canónico; eliminar o renombrar
   campos obligatorios; romper la estabilidad de IDs; introducir una base de
   datos; cambiar PyQt6 por otra biblioteca; cambiar la estrategia de bundle;
@@ -308,17 +328,26 @@ Se seguirá Red → Green → Refactor con `pytest`:
    proyecto y desde una carpeta equivalente a `dist/ManualSPSS/content/`.
 9. El módulo mantiene al menos 80% de cobertura y 100% en validaciones
    críticas.
+10. El contenido de los capítulos 1–8 está representado en el catálogo
+    distribuible, con sus elementos gráficos referenciados localmente y una
+    revisión visual que detecta páginas o recursos omitidos.
+
+## Decisiones resueltas
+
+- Se usará PyQt6 como marco visual conforme a la decisión del equipo. La
+  pantalla de créditos seguirá Figma y contendrá el aviso requerido por la
+  licencia de PyQt6; no se introduce una licencia global para el manual.
+- La carpeta `Manual SPSS original/` es la fuente proporcionada: cuatro PDF,
+  capítulos 1–8, 50 páginas en total. El texto es extraíble; las columnas y
+  capturas requieren revisión visual durante la conversión.
+- La versión inicial del catálogo será `0.1.0`; los cambios posteriores
+  usarán versionado semántico mientras el equipo no indique una política
+  institucional distinta.
 
 ## Preguntas abiertas
 
-1. ¿El proyecto se distribuirá bajo GPLv3 o una licencia compatible con
-   PyQt6 GPL, o existe una restricción que obligue a evaluar PySide6/LGPL o
-   una licencia comercial de PyQt6?
-2. ¿El equipo ya tiene el manual fuente y sus recursos en PDF, HTML u otro
-   formato? Esto determinará el conversor editorial, que queda fuera de este
-   módulo.
-3. ¿Qué versión y política de actualización tendrá el contenido (`semver`,
-   fecha o versión institucional)?
+- Ninguna para iniciar el módulo. Los datos de licencia o autoría que no
+  aparezcan en la fuente se dejarán como no confirmados y no se inventarán.
 
 ## Referencias
 

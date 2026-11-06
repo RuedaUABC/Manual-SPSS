@@ -1,0 +1,636 @@
+{
+  "schema_version": 1,
+  "manual_id": "manual-spss",
+  "title": "Manual SPSS",
+  "version": "0.1.0",
+  "locale": "es-MX",
+  "sections": [
+    {
+      "id": "chapter-1",
+      "parent_id": null,
+      "kind": "chapter",
+      "title": "Introducción al SPSS",
+      "order": 1,
+      "body": "sections/chapter-1.html",
+      "search_terms": [
+        "iniciar SPSS",
+        "vista de datos",
+        "vista de variables",
+        "visor de resultados"
+      ],
+      "resources": [
+        {
+          "path": "assets/chapter-1/page-02-figure-01.png",
+          "mime_type": "image/png",
+          "alt_text": "Resultado de búsqueda de IBM SPSS Statistics 25 en Windows."
+        },
+        {
+          "path": "assets/chapter-1/page-02-figure-02.png",
+          "mime_type": "image/png",
+          "alt_text": "Ficha de IBM SPSS Statistics 25 con la acción para abrir el programa."
+        },
+        {
+          "path": "assets/chapter-1/page-03-figure-01.png",
+          "mime_type": "image/png",
+          "alt_text": "SPSS: versión, licencia y ventana de bienvenida (página fuente 3)."
+        },
+        {
+          "path": "assets/chapter-1/page-03-figure-02.png",
+          "mime_type": "image/png",
+          "alt_text": "SPSS: versión, licencia y ventana de bienvenida (página fuente 3)."
+        },
+        {
+          "path": "assets/chapter-1/page-03-figure-03.png",
+          "mime_type": "image/png",
+          "alt_text": "SPSS: versión, licencia y ventana de bienvenida (página fuente 3)."
+        },
+        {
+          "path": "assets/chapter-1/page-04-figure-01.png",
+          "mime_type": "image/png",
+          "alt_text": "SPSS: vistas de datos y variables y visor de resultados (página fuente 4)."
+        },
+        {
+          "path": "assets/chapter-1/page-04-figure-02.png",
+          "mime_type": "image/png",
+          "alt_text": "SPSS: vistas de datos y variables y visor de resultados (página fuente 4)."
+        },
+        {
+          "path": "assets/chapter-1/page-04-figure-03.png",
+          "mime_type": "image/png",
+          "alt_text": "SPSS: vistas de datos y variables y visor de resultados (página fuente 4)."
+        }
+      ],
+      "attributions": [
+        {
+          "source": "cap1y2_SPSS.pdf, páginas 1–4",
+          "author": null,
+          "license": null
+        }
+      ]
+    },
+    {
+      "id": "chapter-2",
+      "parent_id": null,
+      "kind": "chapter",
+      "title": "Bases de datos en SPSS",
+      "order": 2,
+      "body": "sections/chapter-2.html",
+      "search_terms": [
+        "base de datos",
+        "variables",
+        "valores perdidos",
+        "medida nominal",
+        "medida ordinal",
+        "rol"
+      ],
+      "resources": [
+        {
+          "path": "assets/chapter-2/page-06-figure-01.png",
+          "mime_type": "image/png",
+          "alt_text": "SPSS: base de datos y definición de variables (página fuente 6)."
+        },
+        {
+          "path": "assets/chapter-2/page-06-figure-02.png",
+          "mime_type": "image/png",
+          "alt_text": "SPSS: base de datos y definición de variables (página fuente 6)."
+        },
+        {
+          "path": "assets/chapter-2/page-07-figure-01.png",
+          "mime_type": "image/png",
+          "alt_text": "SPSS: tipo, anchura, decimales, etiquetas y valores (página fuente 7)."
+        },
+        {
+          "path": "assets/chapter-2/page-07-figure-02.png",
+          "mime_type": "image/png",
+          "alt_text": "SPSS: tipo, anchura, decimales, etiquetas y valores (página fuente 7)."
+        },
+        {
+          "path": "assets/chapter-2/page-07-figure-03.png",
+          "mime_type": "image/png",
+          "alt_text": "SPSS: tipo, anchura, decimales, etiquetas y valores (página fuente 7)."
+        },
+        {
+          "path": "assets/chapter-2/page-08-figure-01.png",
+          "mime_type": "image/png",
+          "alt_text": "SPSS: valores perdidos y presentación de columnas (página fuente 8)."
+        }
+      ],
+      "attributions": [
+        {
+          "source": "cap1y2_SPSS.pdf, páginas 5–9",
+          "author": null,
+          "license": null
+        }
+      ]
+    },
+    {
+      "id": "chapter-3",
+      "parent_id": null,
+      "kind": "chapter",
+      "title": "Análisis de estadísticos descriptivos en SPSS",
+      "order": 3,
+      "body": "sections/chapter-3.html",
+      "search_terms": [
+        "estadísticos descriptivos",
+        "media",
+        "mediana",
+        "moda",
+        "varianza",
+        "frecuencias",
+        "respuestas múltiples"
+      ],
+      "resources": [
+        {
+          "path": "assets/chapter-3/page-02-figure-01.png",
+          "mime_type": "image/png",
+          "alt_text": "SPSS: menús y opciones para obtener estadísticos descriptivos (página fuente 2)."
+        },
+        {
+          "path": "assets/chapter-3/page-02-figure-02.png",
+          "mime_type": "image/png",
+          "alt_text": "SPSS: menús y opciones para obtener estadísticos descriptivos (página fuente 2)."
+        },
+        {
+          "path": "assets/chapter-3/page-03-figure-01.png",
+          "mime_type": "image/png",
+          "alt_text": "SPSS: selección y traslado de variables (página fuente 3)."
+        },
+        {
+          "path": "assets/chapter-3/page-03-figure-02.png",
+          "mime_type": "image/png",
+          "alt_text": "SPSS: selección y traslado de variables (página fuente 3)."
+        },
+        {
+          "path": "assets/chapter-3/page-04-figure-01.png",
+          "mime_type": "image/png",
+          "alt_text": "SPSS: media, frecuencias y visor de resultados (página fuente 4)."
+        },
+        {
+          "path": "assets/chapter-3/page-04-figure-02.png",
+          "mime_type": "image/png",
+          "alt_text": "SPSS: media, frecuencias y visor de resultados (página fuente 4)."
+        },
+        {
+          "path": "assets/chapter-3/page-04-figure-03.png",
+          "mime_type": "image/png",
+          "alt_text": "SPSS: media, frecuencias y visor de resultados (página fuente 4)."
+        },
+        {
+          "path": "assets/chapter-3/page-05-figure-01.png",
+          "mime_type": "image/png",
+          "alt_text": "SPSS: selección de variables para frecuencias (página fuente 5)."
+        },
+        {
+          "path": "assets/chapter-3/page-05-figure-02.png",
+          "mime_type": "image/png",
+          "alt_text": "SPSS: selección de variables para frecuencias (página fuente 5)."
+        },
+        {
+          "path": "assets/chapter-3/page-05-figure-03.png",
+          "mime_type": "image/png",
+          "alt_text": "SPSS: selección de variables para frecuencias (página fuente 5)."
+        },
+        {
+          "path": "assets/chapter-3/page-06-figure-01.png",
+          "mime_type": "image/png",
+          "alt_text": "SPSS: mediana, dispersión y varianza (página fuente 6)."
+        },
+        {
+          "path": "assets/chapter-3/page-06-figure-02.png",
+          "mime_type": "image/png",
+          "alt_text": "SPSS: mediana, dispersión y varianza (página fuente 6)."
+        },
+        {
+          "path": "assets/chapter-3/page-06-figure-03.png",
+          "mime_type": "image/png",
+          "alt_text": "SPSS: mediana, dispersión y varianza (página fuente 6)."
+        },
+        {
+          "path": "assets/chapter-3/page-06-figure-04.png",
+          "mime_type": "image/png",
+          "alt_text": "SPSS: mediana, dispersión y varianza (página fuente 6)."
+        },
+        {
+          "path": "assets/chapter-3/page-07-figure-01.png",
+          "mime_type": "image/png",
+          "alt_text": "SPSS: opciones estadísticas y variables múltiples (página fuente 7)."
+        },
+        {
+          "path": "assets/chapter-3/page-07-figure-02.png",
+          "mime_type": "image/png",
+          "alt_text": "SPSS: opciones estadísticas y variables múltiples (página fuente 7)."
+        },
+        {
+          "path": "assets/chapter-3/page-07-figure-03.png",
+          "mime_type": "image/png",
+          "alt_text": "SPSS: opciones estadísticas y variables múltiples (página fuente 7)."
+        },
+        {
+          "path": "assets/chapter-3/page-08-figure-01.png",
+          "mime_type": "image/png",
+          "alt_text": "SPSS: definición de conjuntos de respuestas múltiples (página fuente 8)."
+        },
+        {
+          "path": "assets/chapter-3/page-08-figure-02.png",
+          "mime_type": "image/png",
+          "alt_text": "SPSS: definición de conjuntos de respuestas múltiples (página fuente 8)."
+        },
+        {
+          "path": "assets/chapter-3/page-08-figure-03.png",
+          "mime_type": "image/png",
+          "alt_text": "SPSS: definición de conjuntos de respuestas múltiples (página fuente 8)."
+        },
+        {
+          "path": "assets/chapter-3/page-08-figure-04.png",
+          "mime_type": "image/png",
+          "alt_text": "SPSS: definición de conjuntos de respuestas múltiples (página fuente 8)."
+        },
+        {
+          "path": "assets/chapter-3/page-08-figure-05.png",
+          "mime_type": "image/png",
+          "alt_text": "SPSS: definición de conjuntos de respuestas múltiples (página fuente 8)."
+        },
+        {
+          "path": "assets/chapter-3/page-08-figure-06.png",
+          "mime_type": "image/png",
+          "alt_text": "SPSS: definición de conjuntos de respuestas múltiples (página fuente 8)."
+        },
+        {
+          "path": "assets/chapter-3/page-09-figure-01.png",
+          "mime_type": "image/png",
+          "alt_text": "SPSS: tablas de frecuencias y porcentajes (página fuente 9)."
+        },
+        {
+          "path": "assets/chapter-3/page-09-figure-02.png",
+          "mime_type": "image/png",
+          "alt_text": "SPSS: tablas de frecuencias y porcentajes (página fuente 9)."
+        },
+        {
+          "path": "assets/chapter-3/page-09-figure-03.png",
+          "mime_type": "image/png",
+          "alt_text": "SPSS: tablas de frecuencias y porcentajes (página fuente 9)."
+        }
+      ],
+      "attributions": [
+        {
+          "source": "MANUAL SPSS CAPITULO 3 Y 4.pdf, páginas 1–9",
+          "author": null,
+          "license": null
+        }
+      ]
+    },
+    {
+      "id": "chapter-4",
+      "parent_id": null,
+      "kind": "chapter",
+      "title": "Análisis de variables categóricas en SPSS",
+      "order": 4,
+      "body": "sections/chapter-4.html",
+      "search_terms": [
+        "variables categóricas",
+        "tablas de contingencia",
+        "tablas cruzadas",
+        "porcentajes"
+      ],
+      "resources": [
+        {
+          "path": "assets/chapter-4/page-11-figure-01.png",
+          "mime_type": "image/png",
+          "alt_text": "SPSS: menú y datos para tablas de contingencia (página fuente 11)."
+        },
+        {
+          "path": "assets/chapter-4/page-12-figure-01.png",
+          "mime_type": "image/png",
+          "alt_text": "SPSS: selección de filas, columnas y porcentajes (página fuente 12)."
+        },
+        {
+          "path": "assets/chapter-4/page-12-figure-02.png",
+          "mime_type": "image/png",
+          "alt_text": "SPSS: selección de filas, columnas y porcentajes (página fuente 12)."
+        },
+        {
+          "path": "assets/chapter-4/page-13-figure-01.png",
+          "mime_type": "image/png",
+          "alt_text": "SPSS: ejecución y resultados de tablas cruzadas (página fuente 13)."
+        }
+      ],
+      "attributions": [
+        {
+          "source": "MANUAL SPSS CAPITULO 3 Y 4.pdf, páginas 10–13",
+          "author": null,
+          "license": null
+        }
+      ]
+    },
+    {
+      "id": "chapter-5",
+      "parent_id": null,
+      "kind": "chapter",
+      "title": "Pruebas de hipótesis",
+      "order": 5,
+      "body": "sections/chapter-5.html",
+      "search_terms": [
+        "hipótesis nula",
+        "valor p",
+        "prueba T independiente",
+        "prueba T para una muestra",
+        "muestras relacionadas"
+      ],
+      "resources": [
+        {
+          "path": "assets/chapter-5/page-02-figure-01.png",
+          "mime_type": "image/png",
+          "alt_text": "SPSS: prueba T para muestras independientes y definición de grupos (página fuente 2)."
+        },
+        {
+          "path": "assets/chapter-5/page-02-figure-02.png",
+          "mime_type": "image/png",
+          "alt_text": "SPSS: prueba T para muestras independientes y definición de grupos (página fuente 2)."
+        },
+        {
+          "path": "assets/chapter-5/page-03-figure-01.png",
+          "mime_type": "image/png",
+          "alt_text": "SPSS: resultados de la prueba T para muestras independientes (página fuente 3)."
+        },
+        {
+          "path": "assets/chapter-5/page-03-figure-02.jpg",
+          "mime_type": "image/jpeg",
+          "alt_text": "SPSS: resultados de la prueba T para muestras independientes (página fuente 3)."
+        },
+        {
+          "path": "assets/chapter-5/page-04-figure-01.png",
+          "mime_type": "image/png",
+          "alt_text": "SPSS: prueba T para una muestra y valor de referencia (página fuente 4)."
+        },
+        {
+          "path": "assets/chapter-5/page-04-figure-02.png",
+          "mime_type": "image/png",
+          "alt_text": "SPSS: prueba T para una muestra y valor de referencia (página fuente 4)."
+        },
+        {
+          "path": "assets/chapter-5/page-05-figure-01.png",
+          "mime_type": "image/png",
+          "alt_text": "SPSS: prueba T para muestras relacionadas (página fuente 5)."
+        },
+        {
+          "path": "assets/chapter-5/page-05-figure-02.png",
+          "mime_type": "image/png",
+          "alt_text": "SPSS: prueba T para muestras relacionadas (página fuente 5)."
+        },
+        {
+          "path": "assets/chapter-5/page-06-figure-01.png",
+          "mime_type": "image/png",
+          "alt_text": "SPSS: resultados de pruebas T relacionadas (página fuente 6)."
+        },
+        {
+          "path": "assets/chapter-5/page-06-figure-02.png",
+          "mime_type": "image/png",
+          "alt_text": "SPSS: resultados de pruebas T relacionadas (página fuente 6)."
+        }
+      ],
+      "attributions": [
+        {
+          "source": "Capitulo 5 y 6 Manual SPSS.pdf, páginas 1–6",
+          "author": null,
+          "license": null
+        }
+      ]
+    },
+    {
+      "id": "chapter-6",
+      "parent_id": null,
+      "kind": "chapter",
+      "title": "Análisis de varianza (ANOVA)",
+      "order": 6,
+      "body": "sections/chapter-6.html",
+      "search_terms": [
+        "ANOVA",
+        "análisis de varianza",
+        "pruebas Post Hoc",
+        "Tukey",
+        "Bonferroni"
+      ],
+      "resources": [
+        {
+          "path": "assets/chapter-6/page-08-figure-01.png",
+          "mime_type": "image/png",
+          "alt_text": "SPSS: selección de variable dependiente y factor para ANOVA (página fuente 8)."
+        },
+        {
+          "path": "assets/chapter-6/page-08-figure-02.png",
+          "mime_type": "image/png",
+          "alt_text": "SPSS: selección de variable dependiente y factor para ANOVA (página fuente 8)."
+        },
+        {
+          "path": "assets/chapter-6/page-09-figure-01.png",
+          "mime_type": "image/png",
+          "alt_text": "SPSS: tabla ANOVA y opciones de pruebas Post Hoc (página fuente 9)."
+        },
+        {
+          "path": "assets/chapter-6/page-09-figure-02.png",
+          "mime_type": "image/png",
+          "alt_text": "SPSS: tabla ANOVA y opciones de pruebas Post Hoc (página fuente 9)."
+        },
+        {
+          "path": "assets/chapter-6/page-10-figure-01.png",
+          "mime_type": "image/png",
+          "alt_text": "SPSS: comparaciones múltiples y pruebas Post Hoc (página fuente 10)."
+        },
+        {
+          "path": "assets/chapter-6/page-10-figure-02.png",
+          "mime_type": "image/png",
+          "alt_text": "SPSS: comparaciones múltiples y pruebas Post Hoc (página fuente 10)."
+        }
+      ],
+      "attributions": [
+        {
+          "source": "Capitulo 5 y 6 Manual SPSS.pdf, páginas 7–11",
+          "author": null,
+          "license": null
+        }
+      ]
+    },
+    {
+      "id": "chapter-7",
+      "parent_id": null,
+      "kind": "chapter",
+      "title": "Gráficos en SPSS",
+      "order": 7,
+      "body": "sections/chapter-7.html",
+      "search_terms": [
+        "gráfico circular",
+        "gráfico de pastel",
+        "gráfico de barras",
+        "barras agrupadas",
+        "gráfico de dispersión"
+      ],
+      "resources": [
+        {
+          "path": "assets/chapter-7/page-01-figure-01.png",
+          "mime_type": "image/png",
+          "alt_text": "SPSS: menú de gráficos y datos de ejemplo (página fuente 1)."
+        },
+        {
+          "path": "assets/chapter-7/page-02-figure-01.png",
+          "mime_type": "image/png",
+          "alt_text": "SPSS: opciones del gráfico circular (página fuente 2)."
+        },
+        {
+          "path": "assets/chapter-7/page-02-figure-02.png",
+          "mime_type": "image/png",
+          "alt_text": "SPSS: opciones del gráfico circular (página fuente 2)."
+        },
+        {
+          "path": "assets/chapter-7/page-03-figure-01.png",
+          "mime_type": "image/png",
+          "alt_text": "SPSS: configuración y título del gráfico circular (página fuente 3)."
+        },
+        {
+          "path": "assets/chapter-7/page-03-figure-02.png",
+          "mime_type": "image/png",
+          "alt_text": "SPSS: configuración y título del gráfico circular (página fuente 3)."
+        },
+        {
+          "path": "assets/chapter-7/page-03-figure-03.png",
+          "mime_type": "image/png",
+          "alt_text": "SPSS: configuración y título del gráfico circular (página fuente 3)."
+        },
+        {
+          "path": "assets/chapter-7/page-04-figure-01.png",
+          "mime_type": "image/png",
+          "alt_text": "Gráfico circular generado por SPSS con sus categorías y porcentajes."
+        },
+        {
+          "path": "assets/chapter-7/page-04-figure-02.png",
+          "mime_type": "image/png",
+          "alt_text": "SPSS: gráfico circular generado y edición (página fuente 4)."
+        },
+        {
+          "path": "assets/chapter-7/page-05-figure-01.png",
+          "mime_type": "image/png",
+          "alt_text": "SPSS: interpretación del gráfico circular y menú de barras (página fuente 5)."
+        },
+        {
+          "path": "assets/chapter-7/page-06-figure-01.png",
+          "mime_type": "image/png",
+          "alt_text": "SPSS: variable, eje de categorías y título de barras (página fuente 6)."
+        },
+        {
+          "path": "assets/chapter-7/page-06-figure-02.png",
+          "mime_type": "image/png",
+          "alt_text": "SPSS: variable, eje de categorías y título de barras (página fuente 6)."
+        },
+        {
+          "path": "assets/chapter-7/page-07-figure-01.png",
+          "mime_type": "image/png",
+          "alt_text": "Gráfico de barras simple generado por SPSS."
+        },
+        {
+          "path": "assets/chapter-7/page-07-figure-02.png",
+          "mime_type": "image/png",
+          "alt_text": "SPSS: gráfico de barras simple generado (página fuente 7)."
+        },
+        {
+          "path": "assets/chapter-7/page-09-figure-01.png",
+          "mime_type": "image/png",
+          "alt_text": "SPSS: variables para barras agrupadas (página fuente 9)."
+        },
+        {
+          "path": "assets/chapter-7/page-09-figure-02.png",
+          "mime_type": "image/png",
+          "alt_text": "SPSS: variables para barras agrupadas (página fuente 9)."
+        },
+        {
+          "path": "assets/chapter-7/page-10-figure-01.png",
+          "mime_type": "image/png",
+          "alt_text": "SPSS: título y salida de barras agrupadas (página fuente 10)."
+        },
+        {
+          "path": "assets/chapter-7/page-10-figure-02.png",
+          "mime_type": "image/png",
+          "alt_text": "SPSS: título y salida de barras agrupadas (página fuente 10)."
+        },
+        {
+          "path": "assets/chapter-7/page-11-figure-01.png",
+          "mime_type": "image/png",
+          "alt_text": "SPSS: interpretación de barras agrupadas e inicio de dispersión (página fuente 11)."
+        },
+        {
+          "path": "assets/chapter-7/page-12-figure-01.png",
+          "mime_type": "image/png",
+          "alt_text": "SPSS: asignación de los ejes X y Y (página fuente 12)."
+        },
+        {
+          "path": "assets/chapter-7/page-12-figure-02.png",
+          "mime_type": "image/png",
+          "alt_text": "SPSS: asignación de los ejes X y Y (página fuente 12)."
+        },
+        {
+          "path": "assets/chapter-7/page-13-figure-01.png",
+          "mime_type": "image/png",
+          "alt_text": "Gráfico de dispersión generado por SPSS."
+        },
+        {
+          "path": "assets/chapter-7/page-13-figure-02.png",
+          "mime_type": "image/png",
+          "alt_text": "SPSS: gráfico de dispersión generado (página fuente 13)."
+        }
+      ],
+      "attributions": [
+        {
+          "source": "MANUAL SPSS - CAPÍTULO 7 y 8.pdf, páginas 1–13",
+          "author": null,
+          "license": null
+        }
+      ]
+    },
+    {
+      "id": "chapter-8",
+      "parent_id": null,
+      "kind": "chapter",
+      "title": "Análisis de correlación en SPSS",
+      "order": 8,
+      "body": "sections/chapter-8.html",
+      "search_terms": [
+        "correlación",
+        "correlación bivariada",
+        "Pearson",
+        "coeficiente de correlación"
+      ],
+      "resources": [
+        {
+          "path": "assets/chapter-8/page-14-figure-01.png",
+          "mime_type": "image/png",
+          "alt_text": "SPSS: menú de correlación y relación entre variables (página fuente 14)."
+        },
+        {
+          "path": "assets/chapter-8/page-15-figure-01.png",
+          "mime_type": "image/png",
+          "alt_text": "SPSS: selección de variables y opciones Pearson/bilateral (página fuente 15)."
+        },
+        {
+          "path": "assets/chapter-8/page-15-figure-02.png",
+          "mime_type": "image/png",
+          "alt_text": "SPSS: selección de variables y opciones Pearson/bilateral (página fuente 15)."
+        },
+        {
+          "path": "assets/chapter-8/page-16-figure-01.png",
+          "mime_type": "image/png",
+          "alt_text": "Matriz de correlaciones generada por SPSS."
+        },
+        {
+          "path": "assets/chapter-8/page-17-figure-01.png",
+          "mime_type": "image/png",
+          "alt_text": "Tabla de ejemplo con el coeficiente de Pearson −0.075 entre Edad y Último gasto."
+        }
+      ],
+      "attributions": [
+        {
+          "source": "MANUAL SPSS - CAPÍTULO 7 y 8.pdf, páginas 14–17",
+          "author": null,
+          "license": null
+        }
+      ]
+    }
+  ]
+}
