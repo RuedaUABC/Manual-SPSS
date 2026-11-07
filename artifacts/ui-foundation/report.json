@@ -1,13 +1,13 @@
 {
-  "contract": "SPEC-ui-foundation.md; lector y Ajustes contrastados con Figma, con reflujo para 1440x1024 y 1024x768.",
+  "contract": "SPEC-ui-foundation.md; lector contrastado con Figma para tipografía, distribución del contenido y reproductor plegable en 1440x1024 y 1024x768.",
   "targetViewports": ["1440x1024", "1024x768"],
   "accessibility": {
     "status": "pass",
-    "evidence": "Las pruebas navegan capítulos con Flecha abajo y cambian el tema con Espacio; verifican el nombre accesible del botón Ajustes y contraste >= 4.5:1 para texto, barra lateral y selección en ambos temas. La captura del lector muestra el indicador de foco inicial."
+    "evidence": "Las pruebas navegan capítulos con Flecha abajo, cambian el tema con Espacio y pliegan/despliegan el reproductor con mouse y Espacio. El control informa su acción mediante nombre accesible y conserva foco. También se verifica contraste >= 4.5:1 para texto, barra lateral y selección en ambos temas."
   },
   "responsive": {
     "status": "pass",
-    "evidence": "Se inspeccionaron las capturas del lector en 1440x1024 y 1024x768, además de Ajustes en ambos tamaños. La prueba de redimensionado confirma cambios de tipografía 30px/22px y mantiene el capítulo seleccionado."
+    "evidence": "Se inspeccionaron las capturas del lector en 1440x1024 y 1024x768, además de Ajustes en ambos tamaños. El lector usa cuerpo de 40px y título de 72pt en escritorio, 22px y 46pt en compacto; conserva el capítulo y centra la pestaña de audio al redimensionar."
   },
   "contentStates": {
     "loading": {
@@ -39,12 +39,17 @@
     {
       "viewport": "1440x1024",
       "artifact": "reader-1440x1024.png",
-      "observation": "Ventana del lector con capítulos, logo, contenido real, acciones superiores, control de audio estático y navegación inferior."
+      "observation": "Ventana del lector alineada con Figma: cuerpo de 40px, logotipo de 451px y columna de introducción del 54%; reproductor expandido."
+    },
+    {
+      "viewport": "1440x1024",
+      "artifact": "reader-audio-collapsed-1440x1024.png",
+      "observation": "El reproductor se oculta y la pestaña continúa visible para desplegarlo. La interacción también funciona con teclado."
     },
     {
       "viewport": "1440x1024",
       "artifact": "reader-content-1440x1024.png",
-      "observation": "Al desplazarse se cargan capturas locales del manual y sus atribuciones de página."
+      "observation": "Contenido real del manual después de desplazar el lector; el texto conserva la escala de escritorio y la navegación queda fuera de la tarjeta."
     },
     {
       "viewport": "1440x1024",
@@ -54,7 +59,7 @@
     {
       "viewport": "1024x768",
       "artifact": "reader-1024x768.png",
-      "observation": "El lector conserva jerarquía, navegación y contenido al reducir la ventana; el texto y el logo se ajustan al ancho."
+      "observation": "El lector conserva jerarquía, navegación y contenido al reducir la ventana; usa cuerpo de 22px, logotipo de 270px y mantiene centrada la pestaña de audio."
     },
     {
       "viewport": "1024x768",

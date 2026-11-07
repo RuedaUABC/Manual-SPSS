@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "repository": "https://huggingface.co/rhasspy/piper-voices",
+  "revision": "e7229f7d33a10e145e109b886d661984201ac3c4",
+  "voices": [
+    {
+      "id": "es_MX-ald-medium",
+      "display_name": "Español (México) — Ald",
+      "locale": "es-MX",
+      "quality": "medium",
+      "dataset_license": "Unlicense",
+      "model": {
+        "source_path": "es/es_MX/ald/medium/es_MX-ald-medium.onnx",
+        "path": "es_MX-ald-medium/es_MX-ald-medium.onnx",
+        "size_bytes": 63201294,
+        "sha256": "019b3803293c93e34a206dd2e53a3889209a514e786fd7144f7b70196c579b63"
+      },
+      "config": {
+        "source_path": "es/es_MX/ald/medium/es_MX-ald-medium.onnx.json",
+        "path": "es_MX-ald-medium/es_MX-ald-medium.onnx.json",
+        "size_bytes": 4878,
+        "sha256": "5a71498158e04afc8099bfd019c7e87c68eb9d042505a2b1a87e5c1ac2b1a61d"
+      },
+      "model_card": {
+        "source_path": "es/es_MX/ald/medium/MODEL_CARD",
+        "path": "es_MX-ald-medium/MODEL_CARD",
+        "size_bytes": 320,
+        "sha256": "1f0694ceb3f1e78c1e2ee0e2d5da40f19f965bc638e1b4fb4fca9bdca420d713"
+      }
+    },
+    {
+      "id": "es_ES-davefx-medium",
+      "display_name": "Español (España) — Davefx",
+      "locale": "es-ES",
+      "quality": "medium",
+      "dataset_license": "CC0",
+      "model": {
+        "source_path": "es/es_ES/davefx/medium/es_ES-davefx-medium.onnx",
+        "path": "es_ES-davefx-medium/es_ES-davefx-medium.onnx",
+        "size_bytes": 63201294,
+        "sha256": "6658b03b1a6c316ee4c265a9896abc1393353c2d9e1bca7d66c2c442e222a917"
+      },
+      "config": {
+        "source_path": "es/es_ES/davefx/medium/es_ES-davefx-medium.onnx.json",
+        "path": "es_ES-davefx-medium/es_ES-davefx-medium.onnx.json",
+        "size_bytes": 4817,
+        "sha256": "0e0dda87c732f6f38771ff274a6380d9252f327dca77aa2963d5fbdf9ec54842"
+      },
+      "model_card": {
+        "source_path": "es/es_ES/davefx/medium/MODEL_CARD",
+        "path": "es_ES-davefx-medium/MODEL_CARD",
+        "size_bytes": 276,
+        "sha256": "420703b5d8ea239b729f13d83f31eea9bae5fcb89447de23ebc94aa8a4768f95"
+      }
+    }
+  ]
+}

@@ -8,7 +8,7 @@ from html import escape, unescape
 from pathlib import Path
 
 from PyQt6.QtCore import QSize, Qt, QUrl
-from PyQt6.QtGui import QFont, QIcon, QResizeEvent, QShowEvent
+from PyQt6.QtGui import QCloseEvent, QFont, QIcon, QResizeEvent, QShowEvent
 from PyQt6.QtSvgWidgets import QSvgWidget
 from PyQt6.QtWidgets import (
     QApplication,
@@ -27,8 +27,13 @@ from PyQt6.QtWidgets import (
     QWidget,
 )
 
+from manual_spss.tts_engine.controller import SpeechController
+from manual_spss.tts_engine.models import PlaybackState, SpeedPreset
+from manual_spss.tts_engine.requests import reading_text
+from manual_spss.ui.audio_player import AudioPlayer
 from manual_spss.ui.models import ManualPage
 from manual_spss.ui.theme import Theme, stylesheet_for, tokens_for
+from manual_spss.ui.voice_settings import VoiceSettings
 
 _ICON_SIZE = 50
 _PAGE_ROLE = int(Qt.ItemDataRole.UserRole)
@@ -39,58 +44,6 @@ def _asset_path(filename: str) -> Path:
     return Path(__file__).with_name("assets") / filename
 
 
-class _AudioPreview(QWidget):
-    """Non-interactive preview of the audio controls until the TTS module lands."""
-
-    def __init__(self, parent: QWidget | None = None) -> None:
-        super().__init__(parent)
-        self.setFixedSize(528, 100)
-        self.setAttribute(Qt.WidgetAttribute.WA_TransparentForMouseEvents)
-        self.setAccessibleName(
-            "Controles de audio. Se habilitarán al integrar la lectura en voz alta."
-        )
-        self.setToolTip("Los controles de audio se habilitarán con el motor de voz")
-
-        background = QSvgWidget(str(_asset_path("audio-menu.svg")), self)
-        background.setGeometry(0, -53, 528, 131)
-
-        speed = QFrame(self)
-        speed.setObjectName("audioSpeed")
-        speed.setGeometry(41, 21, 132, 23)
-        speed.setStyleSheet(
-            "QFrame#audioSpeed { background: #a8454d; border-radius: 12px; }"
-            "QLabel { color: white; font-size: 14px; font-weight: 600; }"
-        )
-        speed_layout = QHBoxLayout(speed)
-        speed_layout.setContentsMargins(6, 0, 6, 0)
-        speed_layout.setSpacing(18)
-        speed_toggle = QSvgWidget(str(_asset_path("audio-speed-toggle.svg")))
-        speed_toggle.setFixedSize(10, 10)
-        speed_layout.addWidget(speed_toggle)
-        speed_label = QLabel("x1.0")
-        speed_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        speed_layout.addWidget(speed_label)
-
-        controls = QSvgWidget(str(_asset_path("audio-controls.svg")), self)
-        controls.setGeometry(196, 13, 291, 41)
-
-        progress_track = QFrame(self)
-        progress_track.setGeometry(16, 66, 496, 6)
-        progress_track.setStyleSheet(
-            "background: #b98486; border: 1px solid rgba(221,239,242,0.7);"
-            "border-radius: 3px;"
-        )
-        progress_fill = QFrame(self)
-        progress_fill.setGeometry(16, 66, 11, 6)
-        progress_fill.setStyleSheet(
-            "background: #2b1517; border: 1px solid rgba(221,239,242,0.7);"
-            "border-radius: 3px;"
-        )
-
-        audio_tab = QSvgWidget(str(_asset_path("audio-tab.svg")), self)
-        audio_tab.setGeometry(228, 77, 72, 30)
-
-
 class ManualWindow(QMainWindow):
     """Desktop shell with chapter navigation, reader, settings and themes."""
 
@@ -98,9 +51,14 @@ class ManualWindow(QMainWindow):
         self,
         pages: Sequence[ManualPage],
         parent: QWidget | None = None,
+        *,
+        speech_controller: SpeechController | None = None,
+        speech_unavailable_message: str = "",
     ) -> None:
         super().__init__(parent)
         self._pages = tuple(pages)
+        self._speech_controller = speech_controller
+        self._speech_unavailable_message = speech_unavailable_message
         self._page_positions: dict[str, int] = {}
         self._current_page_id: str | None = None
         self._theme = Theme.LIGHT
@@ -136,6 +94,7 @@ class ManualWindow(QMainWindow):
         self.screen_stack.addWidget(self.settings_page)
 
         self._populate_chapters()
+        self._connect_speech_controller()
         self._apply_theme(Theme.LIGHT)
         if self._pages:
             self.chapter_list.setCurrentRow(0)
@@ -159,7 +118,7 @@ class ManualWindow(QMainWindow):
         reader = QWidget(self)
         reader.setObjectName("readerPage")
         layout = QVBoxLayout(reader)
-        layout.setContentsMargins(0, 0, 0, 10)
+        layout.setContentsMargins(0, 0, 0, 0)
         layout.setSpacing(0)
 
         header = QWidget(reader)
@@ -181,7 +140,10 @@ class ManualWindow(QMainWindow):
 
         workspace = QWidget(reader)
         workspace_layout = QHBoxLayout(workspace)
-        workspace_layout.setContentsMargins(0, 0, 16, 0)
+        self._workspace_layout = workspace_layout
+        workspace_layout.setContentsMargins(
+            0, 0, 49 if self._wide_layout else 16, 0
+        )
         workspace_layout.setSpacing(15)
 
         self.sidebar = QFrame(workspace)
@@ -210,7 +172,8 @@ class ManualWindow(QMainWindow):
         self.reader_card = QFrame(workspace)
         self.reader_card.setObjectName("readerCard")
         card_layout = QVBoxLayout(self.reader_card)
-        card_layout.setContentsMargins(42, 24, 28, 20)
+        self._reader_card_layout = card_layout
+        card_layout.setContentsMargins(42, 24, 9 if self._wide_layout else 28, 20)
         card_layout.setSpacing(12)
 
         self.title_label = QLabel(self.reader_card)
@@ -239,7 +202,13 @@ class ManualWindow(QMainWindow):
         self.empty_state_label.hide()
         card_layout.addWidget(self.empty_state_label, 1)
 
-        navigation = QHBoxLayout()
+        footer = QWidget(reader)
+        footer.setObjectName("readerFooter")
+        self._reader_footer = footer
+        footer.setFixedHeight(66)
+        navigation = QHBoxLayout(footer)
+        navigation.setContentsMargins(0, 7, 27, 9)
+        navigation.setSpacing(0)
         navigation.addStretch(1)
         self.previous_button = self._icon_button(
             "previous.svg", "Capítulo anterior", "previousButton"
@@ -247,13 +216,38 @@ class ManualWindow(QMainWindow):
         self.next_button = self._icon_button(
             "next.svg", "Capítulo siguiente", "nextButton"
         )
+        self.previous_button.setFixedSize(50, 50)
+        self.next_button.setFixedSize(50, 50)
         navigation.addWidget(self.previous_button)
         navigation.addWidget(self.next_button)
-        card_layout.addLayout(navigation)
         workspace_layout.addWidget(self.reader_card, 1)
         layout.addWidget(workspace, 1)
+        layout.addWidget(footer)
 
-        self.audio_preview = _AudioPreview(reader)
+        self.audio_player = AudioPlayer(reader)
+        self.audio_preview = self.audio_player
+        self.audio_tab = QWidget(reader)
+        self.audio_tab.setFixedSize(72, 30)
+        tab_artwork = QSvgWidget(str(_asset_path("audio-tab.svg")), self.audio_tab)
+        tab_artwork.setGeometry(0, 0, 72, 30)
+        tab_artwork.setAttribute(Qt.WidgetAttribute.WA_TransparentForMouseEvents)
+        self.audio_toggle_button = QToolButton(self.audio_tab)
+        self.audio_toggle_button.setObjectName("audioToggleButton")
+        self.audio_toggle_button.setCheckable(True)
+        self.audio_toggle_button.setChecked(True)
+        self.audio_toggle_button.setGeometry(4, 0, 64, 22)
+        self.audio_toggle_button.setAccessibleDescription(
+            "Cambia la visibilidad del reproductor de audio."
+        )
+        self.audio_toggle_button.toggled.connect(self._set_audio_player_visible)
+        self.audio_player.play_requested.connect(self._play_or_resume)
+        self.audio_player.pause_requested.connect(self._pause_reading)
+        self.audio_player.stop_requested.connect(self._stop_reading)
+        self.audio_player.restart_requested.connect(self._restart_reading)
+        self.audio_player.speed_changed.connect(self._set_reading_speed)
+        self.audio_player.volume_changed.connect(self._set_reading_volume)
+        self.audio_player.mute_toggled.connect(self._set_reading_muted)
+        self._set_audio_player_visible(True)
         self.settings_button.clicked.connect(self._open_settings)
         self.home_button.clicked.connect(self._go_home)
         self.previous_button.clicked.connect(self._previous_page)
@@ -315,12 +309,7 @@ class ManualWindow(QMainWindow):
         content_layout.addWidget(self.settings_stack)
         layout.addWidget(self.settings_content, 1)
 
-        voice_page = self._settings_section(
-            "Voz",
-            "Elige cómo se lee el manual en voz alta.",
-            "La interfaz está preparada. La selección de voz y reproducción se "
-            "habilitarán al integrar el motor de voz.",
-        )
+        voice_page = self._build_voice_settings_page()
         appearance_page = self._build_appearance_page()
         credits_text = self._credits_text()
         credits_page = self._settings_section(
@@ -401,6 +390,40 @@ class ManualWindow(QMainWindow):
         layout.addStretch(1)
         return page
 
+    def _build_voice_settings_page(self) -> QWidget:
+        page = QWidget(self.settings_stack)
+        layout = QVBoxLayout(page)
+        layout.setContentsMargins(0, 0, 0, 0)
+        layout.setSpacing(12)
+
+        title = QLabel("Voz", page)
+        title.setObjectName("settingsPageTitle")
+        title.setFont(QFont(self._font_family, 36, QFont.Weight.Bold))
+        description = QLabel(
+            "Elige una voz española local y escúchala antes de leer el manual.",
+            page,
+        )
+        description.setObjectName("settingsDescription")
+        description.setWordWrap(True)
+        description.setFont(QFont(self._font_family, 15))
+
+        controller = self._speech_controller
+        voices = () if controller is None else controller.voices
+        selected_voice_id = (
+            None if controller is None else controller.selected_voice_id
+        )
+        self.voice_settings = VoiceSettings(
+            voices,
+            selected_voice_id=selected_voice_id,
+            unavailable_message=self._speech_unavailable_message,
+            parent=page,
+        )
+        layout.addWidget(title)
+        layout.addWidget(description)
+        layout.addWidget(self.voice_settings)
+        layout.addStretch(1)
+        return page
+
     def _settings_section(self, title: str, description: str, message: str) -> QWidget:
         page = QWidget(self.settings_stack)
         layout = QVBoxLayout(page)
@@ -443,6 +466,75 @@ class ManualWindow(QMainWindow):
             f"{source_lines}\n\nLa licencia se muestra únicamente cuando "
             "está confirmada en la fuente."
         )
+
+    def _connect_speech_controller(self) -> None:
+        controller = self._speech_controller
+        if controller is None:
+            message = self._speech_unavailable_message or (
+                "La lectura en voz alta no está disponible en esta instalación."
+            )
+            self.audio_player.set_state(PlaybackState.ERROR, message)
+            return
+        controller.state_changed.connect(self._speech_state_changed)
+        controller.progress_changed.connect(self.audio_player.set_progress)
+        controller.voice_changed.connect(self.voice_settings.select_voice)
+        controller.error_occurred.connect(self.voice_settings.set_error)
+        self.voice_settings.voice_selected.connect(controller.select_voice)
+        self.voice_settings.preview_requested.connect(controller.preview_voice)
+        speed_index = self.audio_player.speed_combo.findData(controller.speed)
+        if speed_index >= 0:
+            self.audio_player.speed_combo.setCurrentIndex(speed_index)
+
+    def _play_or_resume(self) -> None:
+        controller = self._speech_controller
+        if controller is None:
+            self.audio_player.set_state(
+                PlaybackState.ERROR,
+                self._speech_unavailable_message
+                or "La lectura en voz alta no está disponible en esta instalación.",
+            )
+            return
+        if controller.state is PlaybackState.PAUSED:
+            controller.resume()
+            return
+        row = self.chapter_list.currentRow()
+        if row < 0 or row >= len(self._pages):
+            controller.start("")
+            return
+        selected_text = self.content_browser.textCursor().selectedText()
+        text = reading_text(self._pages[row].plain_text, selected_text)
+        if controller.start(text):
+            self.audio_player.set_progress(0)
+
+    def _pause_reading(self) -> None:
+        if self._speech_controller is not None:
+            self._speech_controller.pause()
+
+    def _stop_reading(self) -> None:
+        if self._speech_controller is not None:
+            self._speech_controller.stop()
+
+    def _restart_reading(self) -> None:
+        if self._speech_controller is not None:
+            if self._speech_controller.restart():
+                self.audio_player.set_progress(0)
+
+    def _set_reading_speed(self, speed: SpeedPreset) -> None:
+        if self._speech_controller is not None:
+            self._speech_controller.set_speed(speed)
+
+    def _set_reading_volume(self, volume: float) -> None:
+        if self._speech_controller is not None:
+            self._speech_controller.set_volume(volume)
+
+    def _set_reading_muted(self, muted: bool) -> None:
+        if self._speech_controller is not None:
+            self._speech_controller.set_muted(muted)
+
+    def _speech_state_changed(
+        self, state: PlaybackState, message: str, has_request: bool
+    ) -> None:
+        self.audio_player.set_state(state, message, has_request=has_request)
 
     def _populate_chapters(self) -> None:
         for index, page in enumerate(self._pages):
@@ -487,6 +579,8 @@ class ManualWindow(QMainWindow):
         page = self._pages[row]
         self.content_browser.setHtml(self._page_html(page, row))
         document = self.content_browser.document()
+        if document is not None:
+            document.setDocumentMargin(0)
         if page.base_url is not None and document is not None:
             document.setBaseUrl(QUrl.fromLocalFile(str(page.base_url)))
         scrollbar = self.content_browser.verticalScrollBar()
@@ -496,10 +590,11 @@ class ManualWindow(QMainWindow):
     def _page_html(self, page: ManualPage, row: int) -> str:
         colors = tokens_for(self._theme)
         body_html = page.body_html
-        body_font_size = 30 if self.width() >= 1200 else 22
+        wide_layout = self.width() >= 1200
+        body_font_size = 40 if wide_layout else 22
         if row == 0:
             logo_url = QUrl.fromLocalFile(str(_asset_path("spss-logo.png"))).toString()
-            logo_size = 380 if self.width() >= 1200 else 270
+            logo_size = 451 if wide_layout else 270
 
             def remove_repeated_heading(match: re.Match[str]) -> str:
                 heading = re.sub(r"<[^>]+>", "", match.group(1))
@@ -524,10 +619,15 @@ class ManualWindow(QMainWindow):
                     f'width="{logo_size}" height="{logo_size}" '
                     'alt="Logotipo de SPSS" />'
                 )
+                intro_text_width = "54%" if wide_layout else "62%"
+                intro_logo_width = "46%" if wide_layout else "38%"
                 intro_row = (
                     '<table class="intro-layout" width="100%" cellspacing="0" '
-                    'cellpadding="8" border="0"><tr><td width="62%" valign="top">'
-                    f'{intro.group(0)}</td><td width="38%" align="center" '
+                    f'cellpadding="0" border="0"><tr><td width="{intro_text_width}" '
+                    'valign="top">'
+                    f'{intro.group(0)}</td>'
+                    f'<td width="{intro_logo_width}" align="right" '
+                    'style="padding-right:7px" '
                     f'valign="top">{logo_html}</td></tr></table>'
                 )
                 body_html = (
@@ -539,7 +639,8 @@ class ManualWindow(QMainWindow):
         <html><head><meta charset="utf-8"><style>
         body {{ color: {colors.text}; background: {colors.surface};
             font-family: '{self._font_family}', Arial, sans-serif;
-            font-size: {body_font_size}px; line-height: 1.45; }}
+            font-size: {body_font_size}px; line-height: 1.45; margin: 0; }}
+        table.intro-layout p {{ line-height: 1.2; }}
         h1, h2, h3 {{ color: {colors.text}; line-height: 1.2; }}
         h2 {{ margin-top: 1.25em; font-size: 1.25em; }}
         p, li {{ margin-bottom: 0.8em; }}
@@ -547,7 +648,7 @@ class ManualWindow(QMainWindow):
         figure img {{ max-width: 100%; height: auto; }}
         figcaption {{ color: {colors.secondary_text}; font-size: 0.8em; }}
         table {{ border-collapse: collapse; }}
-        table.intro-layout, table.intro-layout td {{ border: 0; }}
+        table.intro-layout, table.intro-layout td {{ border: 0; padding: 0; }}
         th, td {{ border: 1px solid {colors.border}; padding: 6px 9px; }}
         </style></head><body>{body_html}</body></html>"""
 
@@ -606,6 +707,8 @@ class ManualWindow(QMainWindow):
     def _apply_theme(self, theme: Theme) -> None:
         self._theme = theme
         self.setStyleSheet(stylesheet_for(theme))
+        if hasattr(self, "voice_settings"):
+            self.voice_settings.apply_theme(tokens_for(theme))
         self.light_theme_button.setChecked(theme is Theme.LIGHT)
         self.dark_theme_button.setChecked(theme is Theme.DARK)
         row = self.chapter_list.currentRow()
@@ -621,7 +724,7 @@ class ManualWindow(QMainWindow):
         wide_layout = self.width() >= 1200
         layout_changed = wide_layout != getattr(self, "_wide_layout", wide_layout)
         self._wide_layout = wide_layout
-        title_size = 46 if not wide_layout else 60
+        title_size = 46 if not wide_layout else 72
         self.title_label.setFont(
             QFont(self._font_family, title_size, QFont.Weight.Bold)
         )
@@ -631,6 +734,13 @@ class ManualWindow(QMainWindow):
             if button is not None:
                 button.setStyleSheet(f"font-size: {nav_size}px;")
         row = self.chapter_list.currentRow()
+        if layout_changed and hasattr(self, "_workspace_layout"):
+            self._workspace_layout.setContentsMargins(
+                0, 0, 49 if wide_layout else 16, 0
+            )
+            self._reader_card_layout.setContentsMargins(
+                42, 24, 9 if wide_layout else 28, 20
+            )
         if layout_changed and 0 <= row < len(self._pages):
             scrollbar = self.content_browser.verticalScrollBar()
             scroll_position = scrollbar.value() if scrollbar is not None else 0
@@ -645,8 +755,23 @@ class ManualWindow(QMainWindow):
         super().showEvent(event)
         self._position_audio_preview()
 
+    def closeEvent(self, event: QCloseEvent | None) -> None:  # noqa: N802
+        if self._speech_controller is not None:
+            self._speech_controller.shutdown()
+        super().closeEvent(event)
+
     def _position_audio_preview(self) -> None:
         if not hasattr(self, "audio_preview"):
             return
         self.audio_preview.move((self.reader_page.width() - 528) // 2, 0)
         self.audio_preview.raise_()
+        self.audio_tab.move((self.reader_page.width() - 72) // 2, 77)
+        self.audio_tab.raise_()
+
+    def _set_audio_player_visible(self, visible: bool) -> None:
+        """Show the audio panel while keeping its tab available as a toggle."""
+        self.audio_preview.setVisible(visible)
+        action = "Ocultar" if visible else "Mostrar"
+        accessible_name = f"{action} reproductor de audio"
+        self.audio_toggle_button.setAccessibleName(accessible_name)
+        self.audio_toggle_button.setToolTip(accessible_name)

@@ -19,6 +19,8 @@ el capítulo actual; Ajustes queda a un paso y permite regresar al lector.
   Acción principal: seleccionar un capítulo y consultar su contenido.
 - Tono: editorial y sereno; Inter/Segoe UI, esquinas redondeadas y acento vino.
 - Vistas verificables: 1440×1024 (diseño) y 1024×768 (ventana reducida).
+- En 1440×1024 el diseño usa título de 96 px, texto introductorio de 40 px y
+  logotipo de 451 px; al reducir la ventana, el lector adapta el contenido.
 - PyQt6 y recursos locales empacables; la capa `ui` no importa
   `content_model`. El punto de composición convierte el catálogo a modelos de
   vista e inyecta sus rutas locales.
@@ -32,8 +34,9 @@ el capítulo actual; Ajustes queda a un paso y permite regresar al lector.
 - El catálogo vacío muestra un estado útil sin fallar; un catálogo inválido se
   informa al iniciar con una ruta de recuperación.
 - La navegación por voz queda identificada como pendiente del módulo TTS. Los
-  controles de audio del diseño se muestran como no disponibles mientras no haya
-  motor de voz.
+  controles dibujados del reproductor se muestran como vista previa mientras no
+  haya motor de voz. Una pestaña accesible permite plegar y volver a desplegar el
+  panel, que permanece centrado al redimensionar la ventana.
 - Créditos y derechos de autor presenta atribuciones disponibles en el catálogo
   y deja explícito cuando la licencia no está confirmada.
 
@@ -41,6 +44,8 @@ el capítulo actual; Ajustes queda a un paso y permite regresar al lector.
 
 - Todo botón tiene nombre accesible, foco visible y orden de tabulación lógico;
   la lista y los controles segmentados son operables con teclado.
+- La pestaña del reproductor informa si su acción es mostrar u ocultar el panel
+  y se puede activar con mouse o Espacio.
 - El cambio de tema actualiza texto, controles y contenido HTML. El lector
   conserva su scroll por capítulo mientras no se seleccione otro.
 - Carga: abre directamente el catálogo local validado; no hay descarga ni una

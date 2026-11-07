@@ -15,6 +15,7 @@ class ManualPage:
     body_html: str
     base_url: Path | None = None
     attributions: tuple[str, ...] = ()
+    plain_text: str = ""
 
     def __post_init__(self) -> None:
         if not isinstance(self.identifier, str) or not self.identifier.strip():
@@ -23,6 +24,8 @@ class ManualPage:
             raise ValueError("Page title must not be empty")
         if not isinstance(self.body_html, str):
             raise TypeError("Page body_html must be a string")
+        if not isinstance(self.plain_text, str):
+            raise TypeError("Page plain_text must be a string")
         if self.base_url is not None and not isinstance(self.base_url, Path):
             raise TypeError("Page base_url must be a pathlib.Path or None")
         sources = tuple(self.attributions)

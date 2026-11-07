@@ -11,6 +11,10 @@ from PyQt6.QtGui import QFont
 from PyQt6.QtWidgets import QApplication, QMessageBox
 
 from manual_spss.content_model import ContentError, ManualRepository
+from manual_spss.tts_engine.audio_output import QtAudioOutput
+from manual_spss.tts_engine.controller import SpeechController
+from manual_spss.tts_engine.piper_backend import PiperSpeechEngine, SpeechEngineError
+from manual_spss.tts_engine.service import SpeechService
 from manual_spss.ui import ManualPage, ManualWindow
 
 
@@ -55,6 +59,7 @@ def load_manual_pages(content_root: Path) -> tuple[ManualPage, ...]:
             identifier=section.id,
             title=section.title,
             body_html=section.body_html,
+            plain_text=section.plain_text,
             base_url=body_paths[section.id],
             attributions=tuple(
                 item.source for item in section.attributions if item.source
@@ -62,6 +67,29 @@ def load_manual_pages(content_root: Path) -> tuple[ManualPage, ...]:
         )
         for section in repository.root_sections()
     )
+
+
+def create_speech_controller(
+    manifest_path: Path | None = None,
+) -> tuple[SpeechController | None, str]:
+    """Create an offline TTS controller or an explanatory unavailable state."""
+    try:
+        engine = (
+            PiperSpeechEngine()
+            if manifest_path is None
+            else PiperSpeechEngine(manifest_path)
+        )
+        voices = engine.voices()
+    except (OSError, SpeechEngineError, ValueError) as error:
+        return None, f"No se pudieron preparar las voces españolas: {error}"
+    if not voices:
+        return (
+            None,
+            "No se encontraron voces españolas locales. Prepara los recursos "
+            "de voz antes de usar la lectura en voz alta.",
+        )
+    service = SpeechService(voices)
+    return SpeechController(engine, service, QtAudioOutput()), ""
 
 
 def main() -> int:
@@ -85,6 +113,11 @@ def main() -> int:
         )
         return 1
 
-    window = ManualWindow(pages)
+    speech_controller, speech_message = create_speech_controller()
+    window = ManualWindow(
+        pages,
+        speech_controller=speech_controller,
+        speech_unavailable_message=speech_message,
+    )
     window.show()
     return application.exec()

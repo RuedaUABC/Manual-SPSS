@@ -1,9 +1,8 @@
 # Manual SPSS
 
 Proyecto para consultar y estudiar el manual de SPSS desde una aplicación de
-escritorio. El catálogo local y la primera interfaz de escritorio PyQt6 están
-implementados; el motor de voz, las preferencias completas y el instalador se
-incorporarán en módulos posteriores.
+escritorio. El lector PyQt6 incluye lectura local en español con voces de
+México y España. El instalador para Windows se incorporará en una fase posterior.
 
 ## Inicio rápido
 
@@ -11,9 +10,16 @@ Se requiere Python 3.12 o posterior. Con `uv`:
 
 ```bash
 uv sync --extra dev --python 3.12
+uv run python scripts/fetch_tts_assets.py
 uv run manual-spss
 uv run pytest -q
 ```
+
+La preparación descarga una sola vez los modelos españoles aprobados (unos
+126 MB), sus configuraciones y fichas, y verifica sus checksums. Se requiere
+conexión únicamente para esa preparación. La aplicación carga las voces desde
+disco y no descarga modelos ni envía texto del manual por Internet. Si omites
+este paso, el manual abre igualmente y Ajustes > Voz explica que faltan recursos.
 
 También puedes iniciar el mismo punto de entrada con
 `uv run python -m manual_spss`. En Windows, ejecuta `manual-spss` desde el
@@ -26,6 +32,7 @@ En Windows también puedes preparar el entorno con `pip`:
 ```powershell
 py -3.12 -m venv .venv
 .\.venv\Scripts\python.exe -m pip install -e ".[dev]"
+.\.venv\Scripts\python.exe scripts\fetch_tts_assets.py
 .\.venv\Scripts\python.exe -m pytest -q
 .\.venv\Scripts\manual-spss.exe
 ```
@@ -66,11 +73,12 @@ de integración:
 QT_QPA_PLATFORM=offscreen uv run pytest tests/integration/ui -q
 ```
 
-La ventana inicial muestra los capítulos del catálogo, controles de navegación,
-el selector de tema claro/oscuro y las pantallas de Ajustes. Los controles de
-audio se muestran como una vista estática hasta integrar el motor TTS. La
-interfaz no importa el modelo de contenido; `app.py` adapta el catálogo al
-contrato de vista.
+La ventana muestra los capítulos del catálogo, controles de navegación,
+lectura en voz alta y Ajustes. El reproductor permite reproducir, pausar,
+detener, reiniciar, seleccionar velocidad, controlar volumen y plegar el panel.
+En Ajustes > Voz se puede elegir una región y escuchar una muestra. La interfaz
+no importa el modelo de contenido; `app.py` adapta el catálogo al contrato de
+vista.
 
 ## Estructura
 
@@ -78,6 +86,9 @@ contrato de vista.
 | --- | --- |
 | `src/manual_spss/content_model/` | Modelos, validación y repositorio Python puro. |
 | `src/manual_spss/ui/` | Ventana PyQt6, pantallas, tokens, temas y recursos Figma locales. |
+| `src/manual_spss/tts_engine/` | Piper offline, voces españolas, servicio, salida Qt y trabajador de síntesis. |
+| `assets/tts/voices/manifest.json` | Revisión y checksums fijados para recursos de voz locales. |
+| `scripts/fetch_tts_assets.py` | Preparar y validar voces para desarrollo o empaquetado. |
 | `SPEC-ui-foundation.md` | Diseño, interacciones y estados aceptados para la interfaz. |
 | `artifacts/ui-foundation/` | Capturas de la ventana en escritorio y tamaño reducido. |
 | `src/manual_spss/app.py` | Composición de catálogo e interfaz y punto de entrada. |

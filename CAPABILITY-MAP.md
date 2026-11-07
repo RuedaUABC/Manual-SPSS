@@ -43,9 +43,10 @@ ui-foundation ─────┴──> tts-engine ─────────�
 Orden recomendado por incrementos verticales:
 
 1. `content-model` y `ui-foundation`.
-2. `reader-navigation` con una sección demostrable del manual.
-3. `tts-engine` con un adaptador offline y controles básicos.
-4. `search-bookmarks` integrado con el lector.
+2. `tts-engine` con un adaptador offline y controles funcionales; se adelanta
+   por prioridad del equipo y sus dependencias ya están completas.
+3. `reader-navigation` con jerarquía de secciones, ubicación y progreso.
+4. `search-bookmarks` integrado con el lector jerárquico.
 5. `settings-accessibility`, incluyendo créditos y licencias.
 6. `packaging` y verificación de instalación en Windows 10/11.
 

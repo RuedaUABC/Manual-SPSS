@@ -118,6 +118,18 @@ def stylesheet_for(theme: Theme) -> str:
         QPushButton#iconButton:focus, QToolButton#iconButton:focus {{
             border-color: {colors.accent};
         }}
+        QToolButton#audioToggleButton {{
+            background: transparent;
+            border: 1px solid transparent;
+            border-radius: 8px;
+            padding: 0;
+        }}
+        QToolButton#audioToggleButton:hover {{
+            background: rgba(168, 69, 77, 0.10);
+        }}
+        QToolButton#audioToggleButton:focus {{
+            border: 2px solid {colors.accent};
+        }}
         QTextBrowser#readerBody {{
             background: {colors.surface};
             border: 0;

@@ -5,7 +5,7 @@ from __future__ import annotations
 from pathlib import Path
 
 import pytest
-from PyQt6.QtCore import Qt, QTimer
+from PyQt6.QtCore import QPoint, Qt, QTimer
 from PyQt6.QtTest import QTest
 from PyQt6.QtWidgets import QApplication, QMessageBox
 
@@ -90,12 +90,65 @@ def test_reader_reflows_when_crossing_desktop_widths(
     window.show()
     window.resize(1440, 1024)
     qapp.processEvents()
-    assert "font-size:30px" in window.content_browser.toHtml()
+    assert "font-size:40px" in window.content_browser.toHtml()
+    assert 'width="451" height="451"' in window.content_browser.toHtml()
+    assert 'width="54%"' in window.content_browser.toHtml()
+    assert window.title_label.font().pointSize() == 72
+    assert window._workspace_layout.contentsMargins().right() == 49
+    assert window._reader_card_layout.contentsMargins().right() == 9
+    assert window._reader_footer.isAncestorOf(window.previous_button)
+    assert window._reader_footer.isAncestorOf(window.next_button)
+    assert not window.reader_card.isAncestorOf(window.next_button)
+    assert window.previous_button.mapTo(window.reader_page, QPoint(0, 0)) == QPoint(
+        1313, 965
+    )
+    assert window.next_button.mapTo(window.reader_page, QPoint(0, 0)) == QPoint(
+        1363, 965
+    )
 
     window.resize(1024, 768)
     qapp.processEvents()
     assert "font-size:22px" in window.content_browser.toHtml()
+    assert 'width="270" height="270"' in window.content_browser.toHtml()
+    assert window._workspace_layout.contentsMargins().right() == 16
+    assert window._reader_card_layout.contentsMargins().right() == 28
     assert window.chapter_list.currentRow() == 0
+    window.close()
+
+
+def test_audio_player_can_be_collapsed_and_restored_with_mouse_and_keyboard(
+    qapp: QApplication,  # noqa: ARG001
+) -> None:
+    window = _window(Path("content"))
+    window.show()
+    qapp.processEvents()
+
+    toggle = window.audio_toggle_button
+    assert window.audio_preview.isVisible()
+    assert toggle.accessibleName() == "Ocultar reproductor de audio"
+    assert abs(
+        window.audio_preview.geometry().center().x() - window.reader_page.width() // 2
+    ) <= 1
+    assert abs(
+        window.audio_tab.geometry().center().x() - window.reader_page.width() // 2
+    ) <= 1
+
+    QTest.mouseClick(toggle, Qt.MouseButton.LeftButton)
+    assert not window.audio_preview.isVisible()
+    assert window.audio_tab.isVisible()
+    assert toggle.accessibleName() == "Mostrar reproductor de audio"
+
+    window.resize(1024, 768)
+    qapp.processEvents()
+    assert not window.audio_preview.isVisible()
+    assert abs(
+        window.audio_tab.geometry().center().x() - window.reader_page.width() // 2
+    ) <= 1
+
+    toggle.setFocus()
+    QTest.keyClick(toggle, Qt.Key.Key_Space)
+    assert window.audio_preview.isVisible()
+    assert toggle.accessibleName() == "Ocultar reproductor de audio"
     window.close()
 
 
